@@ -8,11 +8,11 @@ MODERATOR = 'moderator'
 ADMIN = 'admin'
 
 class User(AbstractBaseUser):
-    USER_ROLE = [
-        (USER, 'user'),
-        (MODERATOR, 'moderator'),
-        (ADMIN, 'admin')
-    ]
+    USER_ROLE = (
+        (USER, USER),
+        (MODERATOR, MODERATOR),
+        (ADMIN, ADMIN)
+    )
     username = models.CharField(
         max_length=150,
         unique=True,
