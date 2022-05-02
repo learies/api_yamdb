@@ -1,13 +1,14 @@
-from django.contrib.auth.models import AbstractBaseUser
-from django.db import models
+import uuid
 
-from .managers import CustomUserManager
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 USER = 'user'
 MODERATOR = 'moderator'
 ADMIN = 'admin'
 
-class User(AbstractBaseUser):
+
+class User(AbstractUser):
     USER_ROLE = (
         (USER, USER),
         (MODERATOR, MODERATOR),
@@ -17,33 +18,22 @@ class User(AbstractBaseUser):
         max_length=150,
         unique=True,
     )
+    bio = models.TextField(max_length=500, blank=True)
     email = models.EmailField(
-        max_length=254,
         unique=True,
     )
-    first_name = models.CharField(max_length=150, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
-    bio = models.TextField(blank=True)
     role = models.CharField(
-        max_length=150,
+        max_length=25,
         choices=USER_ROLE,
         default=USER,
-        blank=True
     )
-    # is_admin = models.BooleanField(default=False)
-    # is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
+    confirmation_code = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email',]
-    objects = CustomUserManager()
+    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'email'
 
-    def has_perm(self, perm, obj=None):
-        return self.is_superuser
-
-    def has_module_perms(self, app_label):
-        return self.is_superuser
-    
     def __str__(self):
         return self.username
