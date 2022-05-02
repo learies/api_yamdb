@@ -1,16 +1,19 @@
-from django.shortcuts import render
 from rest_framework import viewsets
-from reviews.models import Title, Genre, Category
-from api.serializers import TitleSerializer, CategorySerializer, GenreSerializer
+
+from api.serializers import (CategorySerializer, GenreSerializer,
+                             TitleSerializer)
+from reviews.models import Category, Genre, Title
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
     serializer_class = TitleSerializer
+
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
