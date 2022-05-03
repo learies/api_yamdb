@@ -61,12 +61,12 @@ class TitleSerializer(serializers.ModelSerializer):
         queryset=Genre.objects.all()
     )
 
-    # avgrating = serializers.SerializerMethodField()
+    avgrating = serializers.SerializerMethodField()
 
-    # def get_avgrating(self, obj):
-    #     avgrating = Title.objects.aggregate(Avg('rating'))['rating__avg']
-    #     return avgrating
+    def get_avgrating(self, obj):
+        avgrating = Title.objects.aggregate(Avg('rating'))['rating__avg']
+        return avgrating
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'year', 'description', 'category', 'genre', 'rating')
+        fields = ('id', 'name', 'year', 'description', 'category', 'genre', 'rating', 'avgrating')
