@@ -1,11 +1,18 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from reviews.models import Title, Genre, Category
-from api.serializers import TitleSerializer, CategorySerializer, GenreSerializer
+
+from reviews.models import Category, Genre, Title
+from users.models import User
 
 from .permissions import ExtendedReadOnlyPermission
+from .serializers import (CategorySerializer, GenreSerializer, TitleSerializer,
+                          UserSerializer)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -13,15 +20,18 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (ExtendedReadOnlyPermission,)
     serializer_class = CategorySerializer
 
+
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     permission_classes = (ExtendedReadOnlyPermission,)
     serializer_class = GenreSerializer
 
+
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
     permission_classes = (ExtendedReadOnlyPermission,)
     serializer_class = TitleSerializer
+
 
 # class CommentViewSet(viewsets.ModelViewSet):
 #     serializer_class = CommentSerializer
