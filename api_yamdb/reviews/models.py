@@ -1,5 +1,3 @@
-from asyncio.unix_events import SelectorEventLoop
-
 from django.conf import settings
 from django.db import models
 
@@ -47,8 +45,8 @@ class Title(models.Model):
     )
     name = models.CharField(max_length=255)
     rating = models.IntegerField(
-        default=0, 
-        null=True, 
+        default=0,
+        null=True,
         blank=True
     )
     year = models.IntegerField()
@@ -60,7 +58,7 @@ class Title(models.Model):
 
 class Review(models.Model):
     """Модель отзывов"""
-    SCORE = ((i,i) for i in range(1, 11))
+    SCORE = ((i, i) for i in range(1, 11))
     text = models.TextField()
     title = models.ForeignKey(
         Title,
@@ -68,23 +66,23 @@ class Review(models.Model):
         related_name='reviews',
     )
     score = models.IntegerField(choices=SCORE)
-    author = models.ForeignKey( 
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.CASCADE, 
-        related_name='reviews', 
-    ) 
-    pub_date = models.DateTimeField( 
-        'Дата публикации', 
-        auto_now_add=True, 
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+    )
+    pub_date = models.DateTimeField(
+        'Дата публикации',
+        auto_now_add=True,
     )
 
     def __str__(self):
         return self.text
 
-    class Meta: 
+    class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['author', 'title'], 
+                fields=['author', 'title'],
                 name='score_once'
             )
         ]
@@ -98,13 +96,13 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments'
     )
-    author = models.ForeignKey( 
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.CASCADE, 
-        related_name='comments' 
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='comments'
     )
-    pub_date = models.DateTimeField( 
-        'Дата публикации', 
+    pub_date = models.DateTimeField(
+        'Дата публикации',
         auto_now_add=True,
     )
 

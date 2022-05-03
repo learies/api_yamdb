@@ -24,6 +24,7 @@ class GenreAdmin(admin.ModelAdmin):
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('title', 'score', 'author', 'pub_date', 'text')
 
+
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('review', 'author', 'pub_date', 'text')
