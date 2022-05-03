@@ -2,6 +2,22 @@ from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 
 from reviews.models import Category, Genre, Title
+from users.models import User
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'role',
+            'bio',
+        )
 
 
 class CategorySerializer(serializers.ModelSerializer):
