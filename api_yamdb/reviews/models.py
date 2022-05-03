@@ -1,3 +1,5 @@
+from asyncio.unix_events import SelectorEventLoop
+
 from django.conf import settings
 from django.db import models
 
@@ -57,6 +59,7 @@ class Title(models.Model):
 
 
 class Review(models.Model):
+    """Модель отзывов"""
     SCORE = ((i,i) for i in range(1, 11))
     text = models.TextField()
     title = models.ForeignKey(
@@ -64,7 +67,7 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews',
     )
-    score = models.IntegerField(choices=SCORE, default=0)
+    score = models.IntegerField(choices=SCORE)
     author = models.ForeignKey( 
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
@@ -88,6 +91,7 @@ class Review(models.Model):
 
 
 class Comment(models.Model):
+    """Модель комментариев"""
     text = models.TextField()
     review = models.ForeignKey(
         Review,
