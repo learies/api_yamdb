@@ -1,11 +1,19 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from reviews.models import Category, Genre, Title
+from users.models import User
 
 from .permissions import ExtendedReadOnlyPermission
-from .serializers import CategorySerializer, GenreSerializer, TitleSerializer
+from .serializers import (CategorySerializer, GenreSerializer, TitleSerializer,
+                          UserSerializer)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'username'
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
