@@ -3,7 +3,6 @@ from rest_framework.relations import SlugRelatedField
 
 from reviews.models import Category, Genre, Title, Review
 from users.models import User
-from django.db.models import Avg
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -60,12 +59,6 @@ class TitleSerializer(serializers.ModelSerializer):
         required=False,
         queryset=Genre.objects.all()
     )
-
-    # avgrating = serializers.SerializerMethodField()
-
-    # def get_avgrating(self, obj):
-    #     avgrating = Title.objects.aggregate(Avg('rating'))['rating__avg']
-    #     return avgrating
 
     class Meta:
         model = Title

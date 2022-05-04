@@ -76,9 +76,4 @@ class TitleViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
-        print('======================================================================================')
-        print('rating_score=', rating)
-        print('======================================================================================')
- 
         serializer.save()
-        # serializer.save(rating= avg_rating)
