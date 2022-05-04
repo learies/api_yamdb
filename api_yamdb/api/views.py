@@ -3,8 +3,9 @@ from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Avg
+from rest_framework.permissions import AllowAny 
 
-from reviews.models import Category, Genre, Title
+from reviews.models import Category, Genre, Title, Review
 from users.models import User
 
 from .permissions import ExtendedReadOnlyPermission
@@ -51,6 +52,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
+    permission_classes = (AllowAny,)
 
     def get_queryset(self):
         title = get_object_or_404(
@@ -73,9 +75,9 @@ class TitleViewSet(viewsets.ModelViewSet):
     serializer_class = TitleSerializer
 
     def perform_create(self, serializer):
-        rating = Title.objects.values('rating').aggregate(avg_rating=Avg('rating'))
+        rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
         print('======================================================================================')
-        print('rating=', rating)
+        print('rating_score=', rating)
         print('======================================================================================')
  
         serializer.save()
