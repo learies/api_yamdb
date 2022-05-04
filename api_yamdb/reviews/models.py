@@ -54,6 +54,9 @@ class Title(models.Model):
     year = models.IntegerField()
     description = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ("-id",)
+
     def __str__(self) -> str:
         return self.name
 
@@ -88,6 +91,8 @@ class Review(models.Model):
                 name='score_once'
             )
         ]
+
+        ordering = ("-id",)
 
 
 class Comment(models.Model):
