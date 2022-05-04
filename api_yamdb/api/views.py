@@ -30,6 +30,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = MeSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     permission_classes = (ExtendedReadOnlyPermission,)
