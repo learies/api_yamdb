@@ -1,21 +1,22 @@
+from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from django.db.models import Avg
-from rest_framework.permissions import AllowAny 
 
-from reviews.models import Category, Genre, Title, Review
+from reviews.models import Category, Genre, Review, Title
 from users.models import User
 
-from .permissions import ExtendedReadOnlyPermission
+from .permissions import AdminOnly, ExtendedReadOnlyPermission
 from .serializers import (CategorySerializer, GenreSerializer, MeSerializer,
-                          TitleSerializer, UserSerializer, ReviewSerializer)
+                          ReviewSerializer, TitleSerializer, UserSerializer)
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated, AdminOnly,)
     lookup_field = 'username'
     filter_backends = (filters.SearchFilter,)
     filterset_fields = ('username')
@@ -24,18 +25,29 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(
         methods=['get', 'patch'],
         detail=False,
+        permission_classes=(IsAuthenticated,),
         url_path='me',
     )
     def me(self, request):
         user = get_object_or_404(User, username=self.request.user)
-        if request.method == 'GET':
-            serializer = MeSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
         if request.method == 'PATCH':
-            serializer = MeSerializer(user, data=request.data, partial=True)
+            if request.user.is_admin:
+                serializer = UserSerializer(
+                    user,
+                    data=request.data,
+                    partial=True,
+                )
+            else:
+                serializer = MeSerializer(
+                    user,
+                    data=request.data,
+                    partial=True,
+                )
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = MeSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
