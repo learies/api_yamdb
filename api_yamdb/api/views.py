@@ -69,6 +69,37 @@ class ReviewViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user, title=title)
 
 
+# class TitleViewSet(viewsets.ModelViewSet):
+#     queryset = Title.objects.all()
+#     permission_classes = (ExtendedReadOnlyPermission,)
+#     serializer_class = TitleSerializer
+
+#     def perform_create(self, serializer):
+#         rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
+#         print('======================================================================================')
+#         print('rating_score=', rating)
+#         print('======================================================================================')
+ 
+#         serializer.save()
+#         # serializer.save(rating= avg_rating)
+
+#     def get_queryset(self):
+#         # if self.request.method == 'GET':
+#         #     queryset = Title.objects.all()
+#         #     queryset = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
+#         #     print('======================================================================================')
+#         #     print('rating_score=', queryset)
+#         #     print('======================================================================================')
+#         #     return queryset
+
+#         titile = self.name
+#         queryset = Title.objects.all()
+#         print('======================================================================================')
+#         print('queryset=', titile)
+#         print('======================================================================================')
+#         return queryset
+
+
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
     permission_classes = (ExtendedReadOnlyPermission,)
@@ -77,8 +108,18 @@ class TitleViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
         print('======================================================================================')
-        print('rating_score=', rating)
+        print('rating=', rating)
         print('======================================================================================')
- 
-        serializer.save()
-        # serializer.save(rating= avg_rating)
+        serializer.save(rating=rating)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
+        serializer = TitleSerializer(data=request.data)
+        serializer.is_valid()
+        serializer.save(rating=rating)
+        print('======================================================================================')
+        print('rating=', rating)
+        print('======================================================================================')
+        return Response(serializer.data)
