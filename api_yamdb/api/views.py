@@ -79,4 +79,4 @@ class TitleViewSet(viewsets.ModelViewSet):
         print('======================================================================================')
  
         serializer.save()
-        # serializer.save(rating=avg_rating)
+        # serializer.save(rating= avg_rating)
