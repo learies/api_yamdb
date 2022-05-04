@@ -19,22 +19,16 @@ class UserViewSet(viewsets.ModelViewSet):
     filterset_fields = ('username')
     search_fields = ('username',)
 
-    @action(
-        methods=['get', 'patch'],
-        detail=False,
-        url_path='me',
-    )
+    @action(methods=['get', 'patch'], detail=False, url_path='me')
     def me(self, request):
         user = get_object_or_404(User, username=self.request.user)
-        if request.method == 'GET':
-            serializer = MeSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
         if request.method == 'PATCH':
             serializer = MeSerializer(user, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-
+        serializer = MeSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
