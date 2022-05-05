@@ -1,3 +1,4 @@
+from turtle import title
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, status, viewsets
@@ -40,13 +41,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
-    permission_classes = (ExtendedReadOnlyPermission,)
+    permission_classes = (AllowAny,)
     serializer_class = CategorySerializer
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
-    permission_classes = (ExtendedReadOnlyPermission,)
+    permission_classes = (AllowAny,)
     serializer_class = GenreSerializer
 
 
@@ -66,6 +67,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             Title,
             id=self.kwargs.get('title_id')
         )
+
         serializer.save(author=self.request.user, title=title)
 
 
@@ -89,10 +91,11 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
-    permission_classes = (ExtendedReadOnlyPermission,)
+    def get_queryset(self):
+        return Title.objects.all().annotate(_average_rating=Avg('reviews__score'))
+
+    permission_classes = (AllowAny,)
     serializer_class = TitleSerializer
 
-    def perform_create(self, serializer):
-        rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
-        serializer.save(rating=rating)
+    def get(self, request , *args, **kwargs):
+        return self.list(request, *args, **kwargs)

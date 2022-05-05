@@ -59,9 +59,11 @@ class TitleSerializer(serializers.ModelSerializer):
         queryset=Genre.objects.all()
     )
 
+    average_rating = serializers.IntegerField(required=False)
+
     class Meta:
         model = Title
-        fields = '__all__'
+        fields = ('id', 'category', 'genre', 'name', 'year', 'average_rating')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
