@@ -80,11 +80,6 @@ class Title(models.Model):
         related_name='genre',
     )
     name = models.CharField(max_length=255)
-    # rating = models.IntegerField(
-    #     default=0,
-    #     null=True,
-    #     blank=True
-    # )
     year = models.IntegerField()
     description = models.TextField(blank=True)
 
@@ -92,7 +87,7 @@ class Title(models.Model):
     def average_rating(self):
         if self._average_rating is not None:
             return self._average_rating
-        return self.reviews.aggregate(Avg('score'))['rating_avg']
+        return self.reviews.aggregate(Avg('score'))['average_rating']
 
     class Meta:
         ordering = ("-id",)

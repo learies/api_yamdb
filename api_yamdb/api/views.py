@@ -87,26 +87,15 @@ class CommentViewSet(viewsets.ModelViewSet):
             Review,
             id=self.kwargs.get('review_id')
         )
-
         serializer.save(author=self.request.user, review=review)
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    # queryset = Title.objects.all()
-
     def get_queryset(self):
         return Title.objects.all().annotate(_average_rating=Avg('reviews__score'))
 
     permission_classes = (AllowAny,)
     serializer_class = TitleSerializer
-
-    # def perform_create(self, serializer):
-    #     # score = Title.reviews.all().values('score')
-    #     # score = Review.objects.filter(name=self.request.title)
-    #     print('======================================================================================')
-    #     print('score=', self.request.GET.items)
-    #     print('======================================================================================')
-    #     serializer.save()
 
     def get(self, request , *args, **kwargs):
         return self.list(request, *args, **kwargs)
