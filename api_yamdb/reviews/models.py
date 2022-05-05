@@ -33,40 +33,12 @@ class Genre(models.Model):
         return self.name
 
 
-class Title(models.Model):
-    """Модель для произведений"""
-    category = models.ForeignKey(
-        'Category',
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name='category',
-    )
-    genre = models.ManyToManyField(
-        'Genre',
-        related_name='genre',
-    )
-    name = models.CharField(max_length=255)
-    rating = models.IntegerField(
-        default=0,
-        null=True,
-        blank=True
-    )
-    year = models.IntegerField()
-    description = models.TextField(blank=True)
-
-    class Meta:
-        ordering = ("-id",)
-
-    def __str__(self) -> str:
-        return self.name
-
-
 class Review(models.Model):
     """Модель отзывов"""
     SCORE = ((i, i) for i in range(1, 11))
     text = models.TextField()
     title = models.ForeignKey(
-        Title,
+        'Title',
         on_delete=models.CASCADE,
         related_name='reviews',
     )
@@ -93,6 +65,40 @@ class Review(models.Model):
         ]
 
         ordering = ("-id",)
+
+
+class Title(models.Model):
+    """Модель для произведений"""
+    category = models.ForeignKey(
+        'Category',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='category',
+    )
+    genre = models.ManyToManyField(
+        'Genre',
+        related_name='genre',
+    )
+    name = models.CharField(max_length=255)
+    # rating = models.IntegerField(
+    #     default=0,
+    #     null=True,
+    #     blank=True
+    # )
+    year = models.IntegerField()
+    description = models.TextField(blank=True)
+
+    @property
+    def average_rating(self):
+        if self._average_rating is not None:
+            return self._average_rating
+        return self.reviews.aggregate(Avg('score'))['rating_avg']
+
+    class Meta:
+        ordering = ("-id",)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Comment(models.Model):

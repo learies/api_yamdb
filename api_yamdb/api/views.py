@@ -1,16 +1,17 @@
+from turtle import title
+from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from django.db.models import Avg
-from rest_framework.permissions import AllowAny 
-
-from reviews.models import Category, Genre, Title, Review
+from reviews.models import Category, Genre, Review, Title
 from users.models import User
 
 from .permissions import ExtendedReadOnlyPermission
-from .serializers import (CategorySerializer, GenreSerializer, MeSerializer,
-                          TitleSerializer, UserSerializer, ReviewSerializer)
+from .serializers import (CategorySerializer, CommentSerializer,
+                          GenreSerializer, MeSerializer, ReviewSerializer,
+                          TitleSerializer, UserSerializer)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -40,13 +41,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
-    permission_classes = (ExtendedReadOnlyPermission,)
+    permission_classes = (AllowAny,)
     serializer_class = CategorySerializer
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
-    permission_classes = (ExtendedReadOnlyPermission,)
+    permission_classes = (AllowAny,)
     serializer_class = GenreSerializer
 
 
@@ -66,60 +67,46 @@ class ReviewViewSet(viewsets.ModelViewSet):
             Title,
             id=self.kwargs.get('title_id')
         )
+
         serializer.save(author=self.request.user, title=title)
 
 
-# class TitleViewSet(viewsets.ModelViewSet):
-#     queryset = Title.objects.all()
-#     permission_classes = (ExtendedReadOnlyPermission,)
-#     serializer_class = TitleSerializer
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    permission_classes = (AllowAny,)
 
-#     def perform_create(self, serializer):
-#         rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
-#         print('======================================================================================')
-#         print('rating_score=', rating)
-#         print('======================================================================================')
- 
-#         serializer.save()
-#         # serializer.save(rating= avg_rating)
+    def get_queryset(self):
+        review = get_object_or_404(
+            Review,
+            id=self.kwargs.get('review_id')
+        )
+        return review.comments.all()
 
-#     def get_queryset(self):
-#         # if self.request.method == 'GET':
-#         #     queryset = Title.objects.all()
-#         #     queryset = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
-#         #     print('======================================================================================')
-#         #     print('rating_score=', queryset)
-#         #     print('======================================================================================')
-#         #     return queryset
+    def perform_create(self, serializer):
+        review = get_object_or_404(
+            Review,
+            id=self.kwargs.get('review_id')
+        )
 
-#         titile = self.name
-#         queryset = Title.objects.all()
-#         print('======================================================================================')
-#         print('queryset=', titile)
-#         print('======================================================================================')
-#         return queryset
+        serializer.save(author=self.request.user, review=review)
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
-    permission_classes = (ExtendedReadOnlyPermission,)
+    # queryset = Title.objects.all()
+
+    def get_queryset(self):
+        return Title.objects.all().annotate(_average_rating=Avg('reviews__score'))
+
+    permission_classes = (AllowAny,)
     serializer_class = TitleSerializer
 
-    def perform_create(self, serializer):
-        rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
-        print('======================================================================================')
-        print('rating=', rating)
-        print('======================================================================================')
-        serializer.save(rating=rating)
+    # def perform_create(self, serializer):
+    #     # score = Title.reviews.all().values('score')
+    #     # score = Review.objects.filter(name=self.request.title)
+    #     print('======================================================================================')
+    #     print('score=', self.request.GET.items)
+    #     print('======================================================================================')
+    #     serializer.save()
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        rating = Review.objects.values('score').aggregate(avg_rating=Avg('score'))
-        serializer = TitleSerializer(data=request.data)
-        serializer.is_valid()
-        serializer.save(rating=rating)
-        print('======================================================================================')
-        print('rating=', rating)
-        print('======================================================================================')
-        return Response(serializer.data)
+    def get(self, request , *args, **kwargs):
+        return self.list(request, *args, **kwargs)
