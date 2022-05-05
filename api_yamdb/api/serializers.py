@@ -59,7 +59,7 @@ class TitleSerializer(serializers.ModelSerializer):
         queryset=Genre.objects.all()
     )
 
-    average_rating = serializers.FloatField()
+    average_rating = serializers.FloatField(required=False)
 
     class Meta:
         model = Title
