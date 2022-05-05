@@ -1,1 +1,1 @@
-REST API для сервиса YaMDb — отзывовы о фильмах, книгах и музыке.
+REST API for YaMDb service — Films, Books adn Music reviews.
