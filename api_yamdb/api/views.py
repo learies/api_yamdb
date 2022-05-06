@@ -9,8 +9,6 @@ from reviews.models import Category, Genre, Review, Title
 from users.models import User
 
 from .permissions import AdminOnly, ExtendedReadOnlyPermission
-
-from .permissions import ExtendedReadOnlyPermission
 from .serializers import (CategorySerializer, CommentSerializer,
                           GenreSerializer, MeSerializer, ReviewSerializer,
                           TitleSerializer, UserSerializer)
@@ -105,11 +103,13 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    def get_queryset(self):
-        return Title.objects.all().annotate(_average_rating=Avg('reviews__score'))
-
-    permission_classes = (AllowAny,)
     serializer_class = TitleSerializer
+    permission_classes = (AllowAny,)
 
-    def get(self, request , *args, **kwargs):
+    def get_queryset(self):
+        return Title.objects.all().annotate(
+            _average_rating=Avg('reviews__score')
+        )
+
+    def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
