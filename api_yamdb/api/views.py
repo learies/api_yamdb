@@ -31,7 +31,8 @@ class APIGetToken(APIView):
             return Response(
                 {'username': 'Пользователь не найден!'},
                 status=status.HTTP_404_NOT_FOUND)
-        if data.get('confirmation_code') == user.confirmation_code:
+
+        if str(data.get('confirmation_code')) == str(user.confirmation_code):
             token = RefreshToken.for_user(user).access_token
             return Response({'token': str(token)},
                             status=status.HTTP_201_CREATED)
