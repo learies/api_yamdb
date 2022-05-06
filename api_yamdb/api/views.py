@@ -13,9 +13,9 @@ from users.models import User
 
 from .permissions import AdminOnly
 from .serializers import (CategorySerializer, CommentSerializer,
-                          GenreSerializer, ReviewSerializer,
-                          SignUpSerializer, TitleSerializer, TokenSerializer,
-                          UserSerializer)
+                          GenreSerializer, OnlyReadUserSerializer,
+                          ReviewSerializer, SignUpSerializer, TitleSerializer,
+                          TokenSerializer, UserSerializer)
 
 
 class APIGetToken(APIView):
@@ -86,13 +86,20 @@ class UserViewSet(viewsets.ModelViewSet):
         url_path='me',
     )
     def me(self, request):
-        serializer = UserSerializer(request.user)
+        user = get_object_or_404(User, username=self.request.user)
         if request.method == 'PATCH':
-            serializer = UserSerializer(
-                request.user, data=request.data, partial=True
-            )
+            if request.user.is_admin:
+                serializer = UserSerializer(
+                    user, data=request.data, partial=True,
+                )
+            else:
+                serializer = OnlyReadUserSerializer(
+                    user, data=request.data, partial=True,
+                )
             serializer.is_valid(raise_exception=True)
             serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = OnlyReadUserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
