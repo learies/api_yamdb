@@ -38,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
 
-class OnlyReadUserSerializer(serializers.ModelSerializer):
+class UserNotAdminSerializer(serializers.ModelSerializer):
     role = serializers.CharField(read_only=True)
 
     class Meta:

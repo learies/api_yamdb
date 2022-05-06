@@ -13,7 +13,7 @@ from users.models import User
 
 from .permissions import AdminOnly
 from .serializers import (CategorySerializer, CommentSerializer,
-                          GenreSerializer, OnlyReadUserSerializer,
+                          GenreSerializer, UserNotAdminSerializer,
                           ReviewSerializer, SignUpSerializer, TitleSerializer,
                           TokenSerializer, UserSerializer)
 
@@ -93,13 +93,13 @@ class UserViewSet(viewsets.ModelViewSet):
                     user, data=request.data, partial=True,
                 )
             else:
-                serializer = OnlyReadUserSerializer(
+                serializer = UserNotAdminSerializer(
                     user, data=request.data, partial=True,
                 )
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        serializer = OnlyReadUserSerializer(user)
+        serializer = UserNotAdminSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
