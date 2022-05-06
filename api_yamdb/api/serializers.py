@@ -38,21 +38,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
 
-class MeSerializer(serializers.ModelSerializer):
-    role = serializers.CharField(read_only=True)
-
-    class Meta:
-        model = User
-        fields = (
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'bio',
-            'role'
-        )
-
-
 class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:

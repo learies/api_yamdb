@@ -13,8 +13,8 @@ from users.models import User
 
 from .permissions import AdminOnly
 from .serializers import (CategorySerializer, CommentSerializer,
-                          GenreSerializer, TokenSerializer, MeSerializer,
-                          ReviewSerializer, SignUpSerializer, TitleSerializer,
+                          GenreSerializer, ReviewSerializer,
+                          SignUpSerializer, TitleSerializer, TokenSerializer,
                           UserSerializer)
 
 
@@ -86,24 +86,13 @@ class UserViewSet(viewsets.ModelViewSet):
         url_path='me',
     )
     def me(self, request):
-        user = get_object_or_404(User, username=self.request.user)
+        serializer = UserSerializer(request.user)
         if request.method == 'PATCH':
-            if request.user.is_admin:
-                serializer = UserSerializer(
-                    user,
-                    data=request.data,
-                    partial=True,
-                )
-            else:
-                serializer = MeSerializer(
-                    user,
-                    data=request.data,
-                    partial=True,
-                )
+            serializer = UserSerializer(
+                request.user, data=request.data, partial=True
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        serializer = MeSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
