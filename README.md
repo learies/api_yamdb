@@ -20,7 +20,7 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-Use management command for importing data with CSV file into the SQLite data base:
+Use management command for importing data from CSV file format into the SQLite data base:
 ```bash
 python script_db.py
 ```
