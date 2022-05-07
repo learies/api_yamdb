@@ -4,7 +4,7 @@ import sqlite3
 conn = sqlite3.connect('db.sqlite3')
 c = conn.cursor()
 
-with open("static/data/category.csv", "r") as data:
+with open("static/data/category.csv", "r", encoding="utf-8") as data:
     reader = csv.DictReader(data)
     for row in reader:
         id = row['id']
@@ -18,7 +18,7 @@ with open("static/data/category.csv", "r") as data:
         )
         conn.commit()
 
-with open("static/data/comments.csv", "r") as data:
+with open("static/data/comments.csv", "r", encoding="utf-8") as data:
     reader = csv.DictReader(data)
     for row in reader:
         id = row['id']
@@ -34,7 +34,7 @@ with open("static/data/comments.csv", "r") as data:
         )
         conn.commit()
 
-with open("static/data/genre.csv", "r") as data:
+with open("static/data/genre.csv", "r", encoding="utf-8") as data:
     reader = csv.DictReader(data)
     for row in reader:
         id = row['id']
@@ -48,7 +48,7 @@ with open("static/data/genre.csv", "r") as data:
         )
         conn.commit()
 
-with open("static/data/genre_title.csv", "r") as data:
+with open("static/data/genre_title.csv", "r", encoding="utf-8") as data:
     reader = csv.DictReader(data)
     for row in reader:
         id = row['id']
@@ -62,7 +62,7 @@ with open("static/data/genre_title.csv", "r") as data:
         )
         conn.commit()
 
-with open("static/data/review.csv", "r") as data:
+with open("static/data/review.csv", "r", encoding="utf-8") as data:
     reader = csv.DictReader(data)
     for row in reader:
         id = row['id']
@@ -79,7 +79,7 @@ with open("static/data/review.csv", "r") as data:
         )
         conn.commit()
 
-with open("static/data/titles.csv", "r") as data:
+with open("static/data/titles.csv", "r", encoding="utf-8") as data:
     reader = csv.DictReader(data)
     for row in reader:
         id = row['id']
