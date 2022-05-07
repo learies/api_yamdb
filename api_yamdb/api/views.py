@@ -12,11 +12,12 @@ from reviews.models import Category, Genre, Review, Title
 from users.models import User
 
 from .mixins import ReviewGenreModelMixin
-from .permissions import AdminOnly
+from .permissions import AdminOnly, IsAdminOrReadOnly
 from .serializers import (CategorySerializer, CommentSerializer,
                           GenreSerializer, ReviewSerializer, SignUpSerializer,
                           TitleSerializer, TokenSerializer,
-                          UserNotAdminSerializer, UserSerializer)
+                          UserNotAdminSerializer, UserSerializer, TitlesViewSerializer)
+from .paginations import PageNumberPagination
 
 
 class APIGetToken(APIView):
@@ -136,7 +137,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminOrReadOnly,)
 
     def get_queryset(self):
         review = get_object_or_404(
@@ -154,13 +155,15 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    serializer_class = TitleSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         return Title.objects.all().annotate(
             _average_rating=Avg('reviews__score')
         )
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def get_serializer_class(self):
+        if self.action in ['list', 'retrieve']:
+            return TitlesViewSerializer
+        return TitleSerializer
