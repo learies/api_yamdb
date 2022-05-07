@@ -9,9 +9,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from reviews.models import Category, Genre, Review, Title
+from reviews.models import Category, Genre, Title
 from users.models import User
 
+from .filters import TitleFilter
 from .mixins import ReviewGenreModelMixin
 from .paginations import PageNumberPagination
 from .permissions import (AdminOnly, IsAdminOrReadOnly,
@@ -111,30 +112,25 @@ class UserViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(ReviewGenreModelMixin):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = (IsAdminOrReadOnly,)
 
 
 class GenreViewSet(ReviewGenreModelMixin):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    permission_classes = (IsAdminOrReadOnly,)
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (UserAndModeratorOrReadOnly,)
 
     def get_queryset(self):
-        title = get_object_or_404(
-            Title,
-            id=self.kwargs.get('title_id')
-        )
+        title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
         return title.reviews.all()
 
     def perform_create(self, serializer):
-        title = get_object_or_404(
-            Title,
-            id=self.kwargs.get('title_id')
-        )
-
+        title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
         serializer.save(author=self.request.user, title=title)
 
 
@@ -162,9 +158,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 class TitleViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = PageNumberPagination
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    filterset_fields = ('name', 'year', 'genre', 'category')
-    search_fields = ('name', 'year', 'category__name', 'genre__name',) 
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = TitleFilter
 
     def get_queryset(self):
         return Title.objects.all().annotate(
