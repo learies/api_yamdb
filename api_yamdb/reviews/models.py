@@ -84,10 +84,10 @@ class Title(models.Model):
     description = models.TextField(blank=True)
 
     @property
-    def average_rating(self):
-        if self._average_rating is not None:
-            return self._average_rating
-        return self.reviews.aggregate(Avg('score'))['average_rating']
+    def rating(self):
+        if self._rating is not None:
+            return self._rating
+        return self.reviews.aggregate(Avg('score'))['rating']
 
     class Meta:
         ordering = ("-id",)

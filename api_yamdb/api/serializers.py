@@ -87,14 +87,14 @@ class TitleSerializer(serializers.ModelSerializer):
 class TitlesViewSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=False, required=True)
     genre = CategorySerializer(many=True, required=False)
-    average_rating = serializers.IntegerField(required=False)
+    rating = serializers.IntegerField(required=False)
 
     class Meta:
         fields = (
             'id',
             'name',
             'year',
-            'average_rating',
+            'rating',
             'description',
             'genre',
             'category'
@@ -104,7 +104,7 @@ class TitlesViewSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'year',
-            'average_rating',
+            'rating',
             'description',
             'genre',
             'category'

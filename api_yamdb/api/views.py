@@ -163,7 +163,7 @@ class TitleViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Title.objects.all().annotate(
-            _average_rating=Avg('reviews__score')
+            _rating=Avg('reviews__score')
         )
 
     def get_serializer_class(self):
