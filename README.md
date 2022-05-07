@@ -33,11 +33,11 @@ python script_db.py
 - categories: categories(types) of titles («Films», «Books», «Music»).
 - genres: genres of titles. One title may be connected to many genres.
 - reviews: reviews of titles. Review is connected to a particular title.
-- comments: comments on titles. Comments is connected to a particular rewiew.
-
-Каждый ресурс описан в документации: указаны эндпоинты (адреса, по которым можно сделать запрос), разрешённые типы запросов, права доступа и дополнительные параметры, если это необходимо.
+- comments: comments on titles. Comments is connected to a particular review.
 
 ## Usage
+
+Every resource is described in documentation: endpoints (address for making query), types of queries which are allowed, access rights and auxiliary parameters if it necessary.
 
 Get the entire description from the link below while your project is running:
 
