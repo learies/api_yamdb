@@ -12,12 +12,13 @@ from reviews.models import Category, Genre, Review, Title
 from users.models import User
 
 from .mixins import ReviewGenreModelMixin
+from .paginations import PageNumberPagination
 from .permissions import AdminOnly, IsAdminOrReadOnly
 from .serializers import (CategorySerializer, CommentSerializer,
                           GenreSerializer, ReviewSerializer, SignUpSerializer,
-                          TitleSerializer, TokenSerializer,
-                          UserNotAdminSerializer, UserSerializer, TitlesViewSerializer)
-from .paginations import PageNumberPagination
+                          TitleSerializer, TitlesViewSerializer,
+                          TokenSerializer, UserNotAdminSerializer,
+                          UserSerializer)
 
 
 class APIGetToken(APIView):
