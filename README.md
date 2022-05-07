@@ -1,6 +1,6 @@
 # REST API for YaMDb
 
-Current library is REST API for YaMDb service which provides access to read, create and edit reviews for the following categories:
+Current library is REST API for YaMDb service which provides access for reading, creating and editing reviews for the following categories:
 
 - Films;
 - Books;
