@@ -11,11 +11,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from reviews.models import Category, Genre, Review, Title
 from users.models import User
 
+from .mixins import ReviewGenreModelMixin
 from .permissions import AdminOnly
 from .serializers import (CategorySerializer, CommentSerializer,
-                          GenreSerializer, UserNotAdminSerializer,
-                          ReviewSerializer, SignUpSerializer, TitleSerializer,
-                          TokenSerializer, UserSerializer)
+                          GenreSerializer, ReviewSerializer, SignUpSerializer,
+                          TitleSerializer, TokenSerializer,
+                          UserNotAdminSerializer, UserSerializer)
 
 
 class APIGetToken(APIView):
@@ -103,15 +104,13 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(ReviewGenreModelMixin):
     queryset = Category.objects.all()
-    permission_classes = (AllowAny,)
     serializer_class = CategorySerializer
 
 
-class GenreViewSet(viewsets.ModelViewSet):
+class GenreViewSet(ReviewGenreModelMixin):
     queryset = Genre.objects.all()
-    permission_classes = (AllowAny,)
     serializer_class = GenreSerializer
 
 
