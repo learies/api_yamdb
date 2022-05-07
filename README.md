@@ -50,7 +50,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-## Authors
+## Authors :technologist:
 > [Alex](https://github.com/learies)
 
 >[Sergey](https://github.com/SergoSolo)
