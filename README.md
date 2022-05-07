@@ -30,7 +30,7 @@ python script_db.py
 - **auth**: authentication.
 - **users**: users.
 - **titles**: titles for reviews (particular film, book or song).
-- **categories**: categories(types) of titles («Films», «Books», «Music»).
+- **categories**: categories(types) of titles (*Films, Books, Music*).
 - **genres**: genres of titles. One title may be connected to many genres.
 - **reviews**: reviews of titles. Review is connected to a particular title.
 - **comments**: comments on titles. Comments is connected to a particular review.
