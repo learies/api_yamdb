@@ -1,6 +1,6 @@
 # REST API for YaMDb
 
-Current library is REST API for YaMDb service which works with the following categories:
+Current library is REST API for YaMDb service which provides access to read, create and edit reviews for the following categories:
 
 - Films;
 - Books;
@@ -41,6 +41,7 @@ Every resource is described in documentation: endpoints (address for making quer
 
 Get the entire description from the link below while your project is running:
 
+
 ```python
 http://127.0.0.1:8000/redoc/
 ```
@@ -50,7 +51,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-## Authors :man_technologist:
+## Authors :technologist:
+
 > [Alex](https://github.com/learies)
 
 >[Sergey](https://github.com/SergoSolo)
