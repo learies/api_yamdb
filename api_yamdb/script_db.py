@@ -1,7 +1,5 @@
 import csv
-import datetime
 import sqlite3
-import uuid
 
 conn = sqlite3.connect('db.sqlite3')
 c = conn.cursor()
