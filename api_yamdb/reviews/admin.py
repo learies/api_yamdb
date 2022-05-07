@@ -5,26 +5,26 @@ from .models import Category, Comment, Genre, Review, Title
 
 @admin.register(Title)
 class TitleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'year', 'description')
+    list_display = ('id', 'name', 'category', 'year', 'description')
     list_filter = ('genre',)
     empty_value_display = '-пусто-'
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
+    list_display = ('id', 'name', 'slug')
 
 
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
+    list_display = ('id', 'name', 'slug')
 
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('title', 'score', 'author', 'pub_date', 'text')
+    list_display = ('id', 'title', 'score', 'author', 'pub_date', 'text')
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('review', 'author', 'pub_date', 'text')
+    list_display = ('id', 'review', 'author', 'pub_date', 'text')
