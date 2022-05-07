@@ -19,14 +19,14 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-Use manegament command for importing data with CSV file into the SQLite data base:
+Use management command for importing data with CSV file into the SQLite data base:
 ```bash
 python script_db.py
 ```
 
 ## Usage
 
-Get the entire description from the like while you project is running:
+Get the entire description from the link below while your project is running:
 
 ```python
 http://127.0.0.1:8000/redoc/
