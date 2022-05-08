@@ -53,7 +53,7 @@ class Review(models.Model):
         auto_now_add=True,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
 
     class Meta:
@@ -84,7 +84,7 @@ class Title(models.Model):
     description = models.TextField(blank=True)
 
     @property
-    def rating(self):
+    def rating(self) -> int:
         if self._rating is not None:
             return self._rating
         return self.reviews.aggregate(Avg('score'))['rating']
@@ -114,5 +114,5 @@ class Comment(models.Model):
         auto_now_add=True,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
