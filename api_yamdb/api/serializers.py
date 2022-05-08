@@ -1,8 +1,9 @@
 from django.forms import ValidationError
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-from reviews.models import Category, Comment, Genre, Review, Title
-from users.models import User
+
+from reviews.models import (Category, Comment, Genre,  # isort:skip
+                            Review, Title)
+from users.models import User  # isort:skip
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -129,7 +130,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('id', 'text', 'author', 'score', 'pub_date')
-    
+
     def validate(self, data):
         if self.context['request'].method == 'POST':
             title_id = (
