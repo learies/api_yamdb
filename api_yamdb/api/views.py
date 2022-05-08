@@ -8,7 +8,6 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-
 from reviews.models import Category, Genre, Title
 from users.models import User
 
@@ -77,7 +76,7 @@ class APISignup(APIView):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, AdminOnly,)
     lookup_field = 'username'
@@ -110,13 +109,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(ReviewGenreModelMixin):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
 
 
 class GenreViewSet(ReviewGenreModelMixin):
-    queryset = Genre.objects.all()
+    queryset = Genre.objects.all().order_by('id')
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrReadOnly,)
 
@@ -144,7 +143,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             review = title.reviews.get(id=self.kwargs.get('review_id'))
         except TypeError:
             TypeError('Нет такого отзыва')
-        return review.comments.all()
+        return review.comments.all().order_by('id')
 
     def perform_create(self, serializer):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
@@ -164,7 +163,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Title.objects.all().annotate(
             _rating=Avg('reviews__score')
-        )
+        ).order_by('id')
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve']:
