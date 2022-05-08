@@ -64,7 +64,7 @@ class Review(models.Model):
             )
         ]
 
-        ordering = ("-id",)
+        ordering = ('-id',)
 
 
 class Title(models.Model):
@@ -90,7 +90,7 @@ class Title(models.Model):
         return self.reviews.aggregate(Avg('score'))['rating']
 
     class Meta:
-        ordering = ("-id",)
+        ordering = ('-id',)
 
     def __str__(self) -> str:
         return self.name
