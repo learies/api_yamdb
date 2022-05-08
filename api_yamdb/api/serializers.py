@@ -1,5 +1,6 @@
+from django.forms import ValidationError
 from rest_framework import serializers
-
+from rest_framework.validators import UniqueValidator
 from reviews.models import Category, Comment, Genre, Review, Title
 from users.models import User
 
@@ -17,6 +18,13 @@ class TokenSerializer(serializers.ModelSerializer):
 
 
 class SignUpSerializer(serializers.ModelSerializer):
+
+    def validate_username(self, value):
+        if value == 'me':
+            raise ValidationError(
+                f'Вы не можете создать пользователя с именем: {value}'
+            )
+        return value
 
     class Meta:
         model = User
@@ -114,7 +122,8 @@ class TitlesViewSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True,
-        slug_field='username'
+        slug_field='username',
+        validators=[UniqueValidator(queryset=Review.objects.all())]
     )
 
     class Meta:
