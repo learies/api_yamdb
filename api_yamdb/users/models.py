@@ -14,23 +14,11 @@ class User(AbstractUser):
         (MODERATOR, MODERATOR),
         (ADMIN, ADMIN)
     )
-    username = models.CharField(
-        max_length=150,
-        unique=True,
-    )
+    username = models.CharField(max_length=150, unique=True)
     bio = models.TextField(max_length=500, blank=True)
-    email = models.EmailField(
-        unique=True,
-    )
-    role = models.CharField(
-        max_length=25,
-        choices=USER_ROLE,
-        default=USER,
-    )
-    confirmation_code = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-    )
+    email = models.EmailField(unique=True)
+    role = models.CharField(max_length=25, choices=USER_ROLE, default=USER)
+    confirmation_code = models.UUIDField(default=uuid.uuid4, editable=False)
 
     REQUIRED_FIELDS = ['username']
     USERNAME_FIELD = 'email'
