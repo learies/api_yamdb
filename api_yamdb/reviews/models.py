@@ -90,6 +90,7 @@ class Title(models.Model):
         return self.reviews.aggregate(Avg('score'))['rating']
 
     class Meta:
+        indexes = [models.Index(fields=['name']),]
         ordering = ('-id',)
 
     def __str__(self) -> str:

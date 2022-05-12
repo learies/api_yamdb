@@ -5,6 +5,8 @@ from reviews.models import (Category, Comment, Genre,  # isort:skip
                             Review, Title)
 from users.models import User  # isort:skip
 
+import datetime as dt
+
 
 class TokenSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -91,6 +93,12 @@ class TitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Title
         fields = ('id', 'category', 'genre', 'name', 'year', 'description')
+
+    def validate_year(self, value):
+        year = dt.date.today().year
+        if not (year - 127 < value <= year):
+            raise serializers.ValidationError('Проверьте год фильма!')
+        return value 
 
 
 class TitlesViewSerializer(serializers.ModelSerializer):
