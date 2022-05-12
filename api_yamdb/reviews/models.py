@@ -11,7 +11,6 @@ class Category(models.Model):
     )
     slug = models.SlugField(
         default='empty',
-        max_length=50,
         unique=True,
     )
 
@@ -30,15 +29,14 @@ class Genre(models.Model):
     )
     slug = models.SlugField(
         default='empty',
-        max_length=50,
         unique=True,
     )
 
-    def __str__(self) -> str:
-        return self.name
-
     class Meta:
         ordering = ('-id',)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Review(models.Model):
@@ -61,18 +59,18 @@ class Review(models.Model):
         auto_now_add=True,
     )
 
-    def __str__(self) -> str:
-        return self.text
-
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['author', 'title'],
+                fields=('author', 'title'),
                 name='score_once'
             )
         ]
 
         ordering = ('-id',)
+
+    def __str__(self) -> str:
+        return self.text
 
 
 class Title(models.Model):
@@ -122,8 +120,8 @@ class Comment(models.Model):
         auto_now_add=True,
     )
 
-    def __str__(self) -> str:
-        return self.text
-
     class Meta:
         ordering = ('-id',)
+
+    def __str__(self) -> str:
+        return self.text
