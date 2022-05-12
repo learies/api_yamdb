@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv('SECRET_KEY') or get_random_secret_key()
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,7 +42,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'api_yamdb.urls'
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
