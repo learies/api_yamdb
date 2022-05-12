@@ -8,7 +8,6 @@ from reviews.models import (Category, Comment, Genre,  # isort:skip
 from users.models import User  # isort:skip
 
 
-
 class TokenSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
     confirmation_code = serializers.CharField(required=True)
