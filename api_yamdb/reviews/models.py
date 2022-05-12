@@ -17,6 +17,9 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    class Meta:
+        ordering = ('-id',)
+
 
 class Genre(models.Model):
     """Модель для жанров"""
@@ -31,6 +34,9 @@ class Genre(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    class Meta:
+        ordering = ('-id',)
 
 
 class Review(models.Model):
@@ -90,7 +96,6 @@ class Title(models.Model):
         return self.reviews.aggregate(Avg('score'))['rating']
 
     class Meta:
-        indexes = [models.Index(fields=['name']),]
         ordering = ('-id',)
 
     def __str__(self) -> str:
@@ -117,3 +122,6 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return self.text
+
+    class Meta:
+        ordering = ('-id',)
