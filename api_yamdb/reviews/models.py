@@ -86,7 +86,7 @@ class Title(models.Model):
         related_name='genre',
     )
     name = models.CharField(max_length=255)
-    year = models.IntegerField()
+    year = models.IntegerField(db_index=True)
     description = models.TextField(blank=True)
 
     @property
