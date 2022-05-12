@@ -10,6 +10,7 @@ class Category(models.Model):
         unique=True,
     )
     slug = models.SlugField(
+        default='empty',
         max_length=50,
         unique=True,
     )
@@ -28,6 +29,7 @@ class Genre(models.Model):
         unique=True,
     )
     slug = models.SlugField(
+        default='empty',
         max_length=50,
         unique=True,
     )
