@@ -1,3 +1,5 @@
+import datetime as dt
+
 from django.forms import ValidationError
 from rest_framework import serializers
 
@@ -5,7 +7,6 @@ from reviews.models import (Category, Comment, Genre,  # isort:skip
                             Review, Title)
 from users.models import User  # isort:skip
 
-import datetime as dt
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -98,7 +99,7 @@ class TitleSerializer(serializers.ModelSerializer):
         year = dt.date.today().year
         if not (year - 127 < value <= year):
             raise serializers.ValidationError('Проверьте год фильма!')
-        return value 
+        return value
 
 
 class TitlesViewSerializer(serializers.ModelSerializer):

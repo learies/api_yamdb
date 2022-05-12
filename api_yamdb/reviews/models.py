@@ -48,7 +48,7 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews',
     )
-    score = models.IntegerField(choices=SCORE)
+    score = models.PositiveSmallIntegerField(choices=SCORE)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
