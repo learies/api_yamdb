@@ -3,9 +3,8 @@ import datetime as dt
 from django.forms import ValidationError
 from rest_framework import serializers
 
-from reviews.models import (Category, Comment, Genre,  # isort:skip
-                            Review, Title)
-from users.models import User  # isort:skip
+from reviews.models import Category, Comment, Genre, Review, Title
+from users.models import User
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -14,7 +13,7 @@ class TokenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username','confirmation_code')
+        fields = ('username', 'confirmation_code')
 
 
 class SignUpSerializer(serializers.ModelSerializer):
