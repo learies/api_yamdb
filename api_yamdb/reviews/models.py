@@ -14,11 +14,11 @@ class Category(models.Model):
         unique=True,
     )
 
-    def __str__(self) -> str:
-        return self.name
-
     class Meta:
         ordering = ('-id',)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Genre(models.Model):
