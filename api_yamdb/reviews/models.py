@@ -1,6 +1,8 @@
+import datetime as dt
 from django.conf import settings
 from django.db import models
-from django.db.models import Avg
+from django.db.models import Avg, Q
+from django.db import IntegrityError
 
 
 class Category(models.Model):
@@ -97,6 +99,7 @@ class Title(models.Model):
 
     class Meta:
         ordering = ('-id',)
+        constraints = [models.CheckConstraint(check=Q(year__in=range(1895, dt.date.today().year+1)), name='year_error')]  
 
     def __str__(self) -> str:
         return self.name
