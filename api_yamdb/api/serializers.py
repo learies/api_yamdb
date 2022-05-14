@@ -92,8 +92,8 @@ class TitleSerializer(serializers.ModelSerializer):
 
     def validate_year(self, value):
         year = dt.date.today().year
-        if not (year - 127 < value <= year):
-            raise serializers.ValidationError('Проверьте год фильма!')
+        if value > year or value <= 0:
+            raise serializers.ValidationError(f'Некорректный год {value}')
         return value
 
 
