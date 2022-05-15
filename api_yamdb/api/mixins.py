@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsAuthorOrReadOnly
 
 
-class ReviewGenreModelMixin(
+class CategoryGenreModelMixin(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,

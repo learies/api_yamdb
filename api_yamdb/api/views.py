@@ -12,7 +12,7 @@ from reviews.models import Category, Genre, Title
 from users.models import User
 
 from .filters import TitleFilter
-from .mixins import ReviewGenreModelMixin
+from .mixins import CategoryGenreModelMixin
 from .paginations import PageNumberPagination
 from .permissions import (AdminOnly, IsAdminOrReadOnly,
                           UserAndModeratorOrReadOnly)
@@ -115,13 +115,13 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class CategoryViewSet(ReviewGenreModelMixin):
+class CategoryViewSet(CategoryGenreModelMixin):
     queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
 
 
-class GenreViewSet(ReviewGenreModelMixin):
+class GenreViewSet(CategoryGenreModelMixin):
     queryset = Genre.objects.all().order_by('id')
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrReadOnly,)
