@@ -118,13 +118,11 @@ class UserViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(CategoryGenreModelMixin):
     queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
-    permission_classes = (IsAdminOrReadOnly,)
 
 
 class GenreViewSet(CategoryGenreModelMixin):
     queryset = Genre.objects.all().order_by('id')
     serializer_class = GenreSerializer
-    permission_classes = (IsAdminOrReadOnly,)
 
 
 class ReviewViewSet(viewsets.ModelViewSet):

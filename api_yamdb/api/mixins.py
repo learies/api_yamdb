@@ -1,7 +1,7 @@
 from rest_framework import filters, mixins, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from .permissions import IsAuthorOrReadOnly
+from .permissions import IsAdminOrReadOnly
 
 
 class CategoryGenreModelMixin(
@@ -12,7 +12,7 @@ class CategoryGenreModelMixin(
 ):
     permission_classes = [
         IsAuthenticatedOrReadOnly,
-        IsAuthorOrReadOnly
+        IsAdminOrReadOnly,
     ]
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'slug')
