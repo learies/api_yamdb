@@ -35,12 +35,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'bio',
-            'role',
+            'username', 'email', 'first_name', 'last_name', 'bio', 'role'
         )
 
 
@@ -50,12 +45,7 @@ class UserNotAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'bio',
-            'role'
+            'username', 'email', 'first_name', 'last_name', 'bio', 'role'
         )
 
 
@@ -103,24 +93,12 @@ class TitlesViewSerializer(serializers.ModelSerializer):
     rating = serializers.IntegerField(required=False)
 
     class Meta:
-        fields = (
-            'id',
-            'name',
-            'year',
-            'rating',
-            'description',
-            'genre',
-            'category'
-        )
         model = Title
+        fields = (
+            'id', 'name', 'year', 'rating', 'description', 'genre', 'category'
+        )
         read_only_fields = (
-            'id',
-            'name',
-            'year',
-            'rating',
-            'description',
-            'genre',
-            'category'
+            'id', 'name', 'year', 'rating', 'description', 'genre', 'category'
         )
 
 
