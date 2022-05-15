@@ -24,26 +24,33 @@ from .serializers import (CategorySerializer, CommentSerializer,
 
 
 class APIGetToken(APIView):
+    """Получить токен по confirmation_code пользователя"""
     permission_classes = (AllowAny,)
 
     def post(self, request):
         serializer = TokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
+
         try:
             user = User.objects.get(username=data['username'])
         except User.DoesNotExist:
             return Response(
                 {'username': 'Пользователь не найден!'},
-                status=status.HTTP_404_NOT_FOUND)
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
-        if str(data.get('confirmation_code')) == str(user.confirmation_code):
-            token = RefreshToken.for_user(user).access_token
-            return Response({'token': str(token)},
-                            status=status.HTTP_201_CREATED)
+        if data.get('confirmation_code') != user.confirmation_code:
+            return Response(
+                {'confirmation_code': 'Неверный код подтверждения!'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        token = RefreshToken.for_user(user).access_token
         return Response(
-            {'confirmation_code': 'Неверный код подтверждения!'},
-            status=status.HTTP_400_BAD_REQUEST)
+            {'token': str(token)},
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class APISignup(APIView):
