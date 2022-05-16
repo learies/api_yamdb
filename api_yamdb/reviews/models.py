@@ -5,40 +5,33 @@ from django.db.models import Avg
 from .validators import validate_year
 
 
-class Category(models.Model):
+class CommonCategoryGenre(models.Model):
+    """Базовая модель для категории и жанров"""
+    name = models.CharField(
+        max_length=254,
+        unique=True,
+    )
+    slug = models.SlugField(
+        default='empty',
+        unique=True,
+    )
+
+    class Meta:
+        abstract = True
+        ordering = ('-id',)
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Category(CommonCategoryGenre):
     """Модель для категории"""
-    name = models.CharField(
-        max_length=254,
-        unique=True,
-    )
-    slug = models.SlugField(
-        default='empty',
-        unique=True,
-    )
-
-    class Meta:
-        ordering = ('-id',)
-
-    def __str__(self) -> str:
-        return self.name
+    pass
 
 
-class Genre(models.Model):
+class Genre(CommonCategoryGenre):
     """Модель для жанров"""
-    name = models.CharField(
-        max_length=254,
-        unique=True,
-    )
-    slug = models.SlugField(
-        default='empty',
-        unique=True,
-    )
-
-    class Meta:
-        ordering = ('-id',)
-
-    def __str__(self) -> str:
-        return self.name
+    pass
 
 
 class Review(models.Model):
