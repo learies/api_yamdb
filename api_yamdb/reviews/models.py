@@ -34,7 +34,18 @@ class Genre(CommonCategoryGenre):
     pass
 
 
-class Review(models.Model):
+class CommonDatePublished(models.Model):
+    """Обстрактная моделя с датой публикации"""
+    pub_date = models.DateTimeField(
+        'Дата публикации',
+        auto_now_add=True,
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Review(CommonDatePublished):
     """Модель отзывов"""
     SCORE = ((i, i) for i in range(1, 11))
     text = models.TextField()
@@ -49,20 +60,15 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews',
     )
-    pub_date = models.DateTimeField(
-        'Дата публикации',
-        auto_now_add=True,
-    )
 
     class Meta:
+        ordering = ('-id',)
         constraints = [
             models.UniqueConstraint(
                 fields=('author', 'title'),
                 name='score_once'
             )
         ]
-
-        ordering = ('-id',)
 
     def __str__(self) -> str:
         return self.text
@@ -97,7 +103,7 @@ class Title(models.Model):
         return self.name
 
 
-class Comment(models.Model):
+class Comment(CommonDatePublished):
     """Модель комментариев"""
     text = models.TextField()
     review = models.ForeignKey(
@@ -109,10 +115,6 @@ class Comment(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='comments'
-    )
-    pub_date = models.DateTimeField(
-        'Дата публикации',
-        auto_now_add=True,
     )
 
     class Meta:
